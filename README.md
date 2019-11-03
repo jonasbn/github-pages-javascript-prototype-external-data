@@ -54,31 +54,9 @@ Enabled [GitHub Pages][github_pages] and got the URL:
 
     `https://jonasbn.github.io/github-pages-javascript-prototype-external-data/`
 
-The fields between the UI and the JSON does not match up exactly, but for this prototype, this does not really matter, anyway something crazy happened - It worked in first shot!
+The fields between the UI and the JSON does not match up exactly, but for this prototype, this does not really matter, I started to wrap my head around [_Manipulating documents_][mdn_manipulation], did some tweaks, introduced use of [`Document.getElementById()`][mdn_getelementbyid] and IDs in the HTML and something crazy happened - It worked first shot!
 
-    ```javascript
-    function reqListener () {
-        var obj = JSON.parse(this.responseText);
-
-        const username = document.querySelector('div.username')
-        username.textContent = obj.data.first_name + " " + obj.data.last_name;
-
-        const bio = document.querySelector('div.bio')
-        bio.textContent = obj.data.email;
-
-        const avatar = document.querySelector('img.avatar');
-        avatar.src = obj.data.avatar;
-    }
-
-    var oReq = new XMLHttpRequest();
-    oReq.addEventListener("load", reqListener);
-    oReq.open("GET", "https://reqres.in/api/users/2");
-    oReq.send();
-    ```
-
-I would love for the HTML solution to use IDs instead of classes, but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space.
-
-This would require adding IDs to the HTML and changing the JavaScript:
+**HTML**:
 
     ```HTML
     <!DOCTYPE html>
@@ -129,7 +107,7 @@ This would require adding IDs to the HTML and changing the JavaScript:
     </html>
     ```
 
-    And the adjusted JavaScript (_untested_):
+**JavaScript**:
 
     ```javascript
     function reqListener () {
@@ -151,9 +129,33 @@ This would require adding IDs to the HTML and changing the JavaScript:
     oReq.send();
     ```
 
+I would love for the HTML solution to use IDs instead of classes using [`Document.getElementById()`][mdn_getelementbyid], but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space, so I went with: [`Document.querySelector()`][mdn_query_selector].
+
 Well I decided to go with the solution requiring a minimum of changes to the original _pen_ mostly just for the satisfaction of being able to take something else and get it to work out of the box.
 
-The satisfaction of taking something and _hacking_ it to work is also incredible, but for this it pushed my knowledge on the use of selectors.
+**JavaScript**:
+
+    ```javascript
+    function reqListener () {
+        var obj = JSON.parse(this.responseText);
+
+        const username = document.querySelector('div.username')
+        username.textContent = obj.data.first_name + " " + obj.data.last_name;
+
+        const bio = document.querySelector('div.bio')
+        bio.textContent = obj.data.email;
+
+        const avatar = document.querySelector('img.avatar');
+        avatar.src = obj.data.avatar;
+    }
+
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    oReq.open("GET", "https://reqres.in/api/users/2");
+    oReq.send();
+    ```
+
+The satisfaction of taking something and _hacking_ it to work is also incredible, but for this it pushed my knowledge on [the use of selectors][mdn_locating_dom].
 
 Since it worked I decided to add a little demonstration of the load of the data, so the page would first render with the static data, which would then be exchanged by the data provided by the API.
 
@@ -180,9 +182,67 @@ Since it worked I decided to add a little demonstration of the load of the data,
     oReq.send();
     ```
 
+As stated above, it was quite a surprise to me that it was so easy. I had expected some sort of obstacle or roadblock in the sense of serving the page using external data.
+
+Next I decided to inflict some proper CSP. Please note that next steps are not security advice, it is simply a hack to trying out applying CSP to the prototype.
+
+First I read the marvellous primer on CSP: [Mozila Hacks: "Implementing Content Security Policy"][moz_hack_csp] together with [Content Security Policy (CSP) Quick Reference][csp_quick_reference] I was able by trial and error to piece together a security policy, applying the to the meta-data section of the `index.html`.
+
+I started with:
+
+    ```html
+    <!-- Enable CSP inside the page's HTML -->
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self';
+            script-src 'self' https://code.jquery.com; style-src 'self'">
+    </head>
+    ```
+
+And success - nothing worked! YAY!
+
+So step by step consulting the [Content Security Policy (CSP) Quick Reference][csp_quick_reference] and the browser developer tools I could piece something together, where my solution would work again, but with CSP enabled.
+
+    ```html
+        <meta http-equiv="Content-Security-Policy" content="
+            default-src 'self'
+            https://fonts.gstatic.com
+            https://reqres.in
+            http://weloveiconfonts.com;
+            img-src 'self'
+            https://encrypted-tbn3.gstatic.com
+            https://s3.amazonaws.com;
+            style-src 'self'
+            https://fonts.googleapis.com
+            http://weloveiconfonts.com">
+    ```
+
+The above approach works, but cannot be sane advice and I must emphasize the importance of a more sane strategy for use of external resources.
+
+- `https://fonts.gstatic.com`
+- `https://reqres.in`
+- `http://weloveiconfonts.com`
+
+Might be perfect uses, but:
+
+- `https://s3.amazonaws.com`
+
+Open up for pretty much _everything_, so this is included here for the purpose of the demonstration.
+
+Any suggestions for building content assembly strategies are most welcome  and this lead us to the conclusion of the prototype work.
+
 ### Conclusion
 
 The final solution is available [here](https://github.com/jonasbn/github-pages-javascript-prototype-external-data) and you can see it running [here](https://jonasbn.github.io/github-pages-javascript-prototype-external-data/)
+
+All goals:
+
+1. Ability to interact and use data from an external resource
+1. The implementation is served from GitHub
+1. The implementation is in Vanilla JavaScript
+
+Were met.
+
+The CSP work was quite educational and quite an eye-opener and I would love to work more in this sphere, but preferably driven by need, since approaching this from a more academic approach is not my _style_, but I guess you have gathered this from following the completed prototype work.
 
 ## Next Step
 
@@ -195,7 +255,7 @@ I am not going to expand the list any further, I could spend more time getting m
 Thanks to all the people, who unknowningly have contributed to this work.
 
 - [Jose Pino][jofpin]
-- The people contributing to StackOverflow and Mozilla Developer Network
+- The people contributing to StackOverflow and Mozilla Developer Network and the resources used to build the foundation for the first prototype leading to this one
 
 Most of the resources mentioned above are listed here:
 
