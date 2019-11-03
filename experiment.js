@@ -1,6 +1,5 @@
 function reqListener () {
     var obj = JSON.parse(this.responseText);
-    console.log(obj);
 
     setTimeout(function(){
 
