@@ -34,7 +34,7 @@ Now lets dig into the details.
 
     This API serves data for a single user.
 
-    ```JSON
+    ```json
     {
         "data": {
             "id": 2,
@@ -58,7 +58,7 @@ Now lets dig into the details.
 
     **HTML**:
 
-    ```HTML
+    ```html
     <!DOCTYPE html>
     <html lang="en">
     <head>
