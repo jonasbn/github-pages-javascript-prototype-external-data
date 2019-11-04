@@ -36,21 +36,21 @@ Now lets dig into the details.
 
     ```JSON
     {
-    "data": {
-        "id": 2,
-        "email": "janet.weaver@reqres.in",
-        "first_name": "Janet",
-        "last_name": "Weaver",
-        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
-    }
+        "data": {
+            "id": 2,
+            "email": "janet.weaver@reqres.in",
+            "first_name": "Janet",
+            "last_name": "Weaver",
+            "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/josephstein/128.jpg"
+        }
     }
     ```
 
-    2. Instead of using the _pen_ from [Codepen.io] I had used previously I located a new _pen_ which would render what looked like profile/contact data. I decided for: "[User profile][user_profile]" by [Jose Pino][jofpin].
+2. Instead of using the _pen_ from [Codepen.io] I had used previously I located a new _pen_ which would render what looked like profile/contact data. I decided for: "[User profile][user_profile]" by [Jose Pino][jofpin].
 
     I copied in the HTML and CSS into the skeleton provided by my previous prototype.
 
-    5. Enabled [GitHub Pages][github_pages] and got the URL:
+3. Enabled [GitHub Pages][github_pages] and got the URL:
 
     `https://jonasbn.github.io/github-pages-javascript-prototype-external-data/`
 
@@ -129,7 +129,7 @@ Now lets dig into the details.
     oReq.send();
     ```
 
-    6. I would love for the HTML solution to use IDs instead of classes using [`Document.getElementById()`][mdn_getelementbyid], but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space, so I went with: [`Document.querySelector()`][mdn_query_selector].
+4. I would love for the HTML solution to use IDs instead of classes using [`Document.getElementById()`][mdn_getelementbyid], but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space, so I went with: [`Document.querySelector()`][mdn_query_selector].
 
     Well I decided to go with the solution requiring a minimum of changes to the original _pen_ mostly just for the satisfaction of being able to take something else and get it to work out of the box.
 
@@ -157,7 +157,7 @@ Now lets dig into the details.
 
     The satisfaction of taking something and _hacking_ it to work is also incredible, but for this it pushed my knowledge on [the use of selectors][mdn_locating_dom].
 
-    7. Since it worked I decided to add a little demonstration of the load of the data, so the page would first render with the static data, which would then be exchanged by the data provided by the API.
+5. Since it worked I decided to add a little demonstration of the load of the data, so the page would first render with the static data, which would then be exchanged by the data provided by the API.
 
     ```javascript
     function reqListener () {
@@ -184,7 +184,7 @@ Now lets dig into the details.
 
     As stated above, it was quite a surprise to me that it was so easy. I had expected some sort of obstacle or roadblock in the sense of serving the page using external data.
 
-    8. Next I decided to inflict some proper CSP. Please note that next steps are not security advice, it is simply a hack to trying out applying CSP to the prototype.
+6. Next I decided to inflict some proper CSP. Please note that next steps are not security advice, it is simply a hack to trying out applying CSP to the prototype.
 
     First I read the marvellous primer on CSP: [Mozila Hacks: "Implementing Content Security Policy"][moz_hack_csp] together with [Content Security Policy (CSP) Quick Reference][csp_quick_reference] I was able by trial and error to piece together a security policy, applying the to the meta-data section of the `index.html`.
 
@@ -242,20 +242,20 @@ All goals:
 
 Were met.
 
-The CSP work was quite educational and quite an eye-opener and I would love to (and I most certainly have to) work more in this sphere, but preferably driven by need, since approaching this from a more academic approach is not my _style_, but I guess you have gathered this from following the completed prototype work.
+The CSP work was quite educational and quite an eye-opener and I would love to (and I most certainly have to) work more in this sphere, but preferably driven by need, since approaching this from a more academic approach is not my _style_, but I guess you have gathered this from following the prototype approach.
 
 ## Next Step
 
 A lot of next steps where outlined in [the description][github-pages-javascript-prototype] and [blog post][first_blog_post] for the first prototype.
 
-I am not going to expand the list any further, I could spend more time getting my head around CSP, but I would much rather let this driven by need.
+I am not going to expand the list any further, I could spend more time getting my head around CSP, but I would much rather let this driven by the need to tackle obstacles or learn more about CSP.
 
 ## References
 
 Thanks to all the people, who unknowningly have contributed to this work.
 
 - [Jose Pino][jofpin]
-- The people contributing to StackOverflow and Mozilla Developer Network and the resources used to build the foundation for the first prototype leading to this one
+- The people contributing to StackOverflow and Mozilla Developer Network and the resources used to build the foundation for [the prototype][github-pages-javascript-prototype] leading to this one.
 
 Most of the resources mentioned above are listed here:
 
