@@ -26,15 +26,15 @@ Now lets dig into the details.
 
 ## Process
 
-I decided to use the [Req  Res service][reqres], which is an open and freely available service serving dummy data as a RESTful service.
+1. I decided to use the [Req  Res service][reqres], which is an open and freely available service serving dummy data as a RESTful service.
 
-So I located an API, which would serve data in a format that would match my needs.
+    I located an API, which would serve data in a format that would match my needs.
 
     `https://reqres.in/api/users/2`
 
-This API serves data for a single user.
+    This API serves data for a single user.
 
-    ```json
+    ```JSON
     {
     "data": {
         "id": 2,
@@ -46,17 +46,17 @@ This API serves data for a single user.
     }
     ```
 
-Instead of using the _pen_ from [Codepen.io] I had used previously I located a new _pen_ which would render what looked like profile/contact data. I decided for: "[User profile][user_profile]" by [Jose Pino][jofpin].
+    2. Instead of using the _pen_ from [Codepen.io] I had used previously I located a new _pen_ which would render what looked like profile/contact data. I decided for: "[User profile][user_profile]" by [Jose Pino][jofpin].
 
-So I copied in the HTML and CSS into the skeleton provided by my previous prototype.
+    I copied in the HTML and CSS into the skeleton provided by my previous prototype.
 
-Enabled [GitHub Pages][github_pages] and got the URL:
+    5. Enabled [GitHub Pages][github_pages] and got the URL:
 
     `https://jonasbn.github.io/github-pages-javascript-prototype-external-data/`
 
-The fields between the UI and the JSON does not match up exactly, but for this prototype, this does not really matter, I started to wrap my head around [_Manipulating documents_][mdn_manipulation], did some tweaks, introduced use of [`Document.getElementById()`][mdn_getelementbyid] and IDs in the HTML and something crazy happened - It worked first shot!
+    The fields between the UI and the JSON does not match up exactly, but for this prototype, this does not really matter, I started to wrap my head around [_Manipulating documents_][mdn_manipulation], did some tweaks, introduced use of [`Document.getElementById()`][mdn_getelementbyid] and IDs in the HTML and something crazy happened - It worked first shot!
 
-**HTML**:
+    **HTML**:
 
     ```HTML
     <!DOCTYPE html>
@@ -107,7 +107,7 @@ The fields between the UI and the JSON does not match up exactly, but for this p
     </html>
     ```
 
-**JavaScript**:
+    **JavaScript**:
 
     ```javascript
     function reqListener () {
@@ -129,11 +129,11 @@ The fields between the UI and the JSON does not match up exactly, but for this p
     oReq.send();
     ```
 
-I would love for the HTML solution to use IDs instead of classes using [`Document.getElementById()`][mdn_getelementbyid], but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space, so I went with: [`Document.querySelector()`][mdn_query_selector].
+    6. I would love for the HTML solution to use IDs instead of classes using [`Document.getElementById()`][mdn_getelementbyid], but getting this to work with minimal changes to the CSS and HTML is somewhat a part of the constraint on the solution space, so I went with: [`Document.querySelector()`][mdn_query_selector].
 
-Well I decided to go with the solution requiring a minimum of changes to the original _pen_ mostly just for the satisfaction of being able to take something else and get it to work out of the box.
+    Well I decided to go with the solution requiring a minimum of changes to the original _pen_ mostly just for the satisfaction of being able to take something else and get it to work out of the box.
 
-**JavaScript**:
+    **JavaScript**:
 
     ```javascript
     function reqListener () {
@@ -155,9 +155,9 @@ Well I decided to go with the solution requiring a minimum of changes to the ori
     oReq.send();
     ```
 
-The satisfaction of taking something and _hacking_ it to work is also incredible, but for this it pushed my knowledge on [the use of selectors][mdn_locating_dom].
+    The satisfaction of taking something and _hacking_ it to work is also incredible, but for this it pushed my knowledge on [the use of selectors][mdn_locating_dom].
 
-Since it worked I decided to add a little demonstration of the load of the data, so the page would first render with the static data, which would then be exchanged by the data provided by the API.
+    7. Since it worked I decided to add a little demonstration of the load of the data, so the page would first render with the static data, which would then be exchanged by the data provided by the API.
 
     ```javascript
     function reqListener () {
@@ -182,13 +182,13 @@ Since it worked I decided to add a little demonstration of the load of the data,
     oReq.send();
     ```
 
-As stated above, it was quite a surprise to me that it was so easy. I had expected some sort of obstacle or roadblock in the sense of serving the page using external data.
+    As stated above, it was quite a surprise to me that it was so easy. I had expected some sort of obstacle or roadblock in the sense of serving the page using external data.
 
-Next I decided to inflict some proper CSP. Please note that next steps are not security advice, it is simply a hack to trying out applying CSP to the prototype.
+    8. Next I decided to inflict some proper CSP. Please note that next steps are not security advice, it is simply a hack to trying out applying CSP to the prototype.
 
-First I read the marvellous primer on CSP: [Mozila Hacks: "Implementing Content Security Policy"][moz_hack_csp] together with [Content Security Policy (CSP) Quick Reference][csp_quick_reference] I was able by trial and error to piece together a security policy, applying the to the meta-data section of the `index.html`.
+    First I read the marvellous primer on CSP: [Mozila Hacks: "Implementing Content Security Policy"][moz_hack_csp] together with [Content Security Policy (CSP) Quick Reference][csp_quick_reference] I was able by trial and error to piece together a security policy, applying the to the meta-data section of the `index.html`.
 
-I started with:
+    I started with:
 
     ```html
     <!-- Enable CSP inside the page's HTML -->
@@ -198,9 +198,9 @@ I started with:
     </head>
     ```
 
-And success - nothing worked! YAY!
+    And success - nothing worked! YAY!
 
-So step by step consulting the [Content Security Policy (CSP) Quick Reference][csp_quick_reference] and the browser developer tools I could piece something together, where my solution would work again, but with CSP enabled.
+    So step by step consulting the [Content Security Policy (CSP) Quick Reference][csp_quick_reference] and the browser developer tools I could piece something together, where my solution would work again, but with CSP enabled.
 
     ```html
         <meta http-equiv="Content-Security-Policy" content="
@@ -216,19 +216,19 @@ So step by step consulting the [Content Security Policy (CSP) Quick Reference][c
             http://weloveiconfonts.com">
     ```
 
-The above approach works, but cannot be sane advice and I must emphasize the importance of a more sane strategy for use of external resources.
+    The above approach works, but cannot be classified as sane advice and I must emphasize the importance of a more sane strategy for use of external resources.
 
-- `https://fonts.gstatic.com`
-- `https://reqres.in`
-- `http://weloveiconfonts.com`
+    - `https://fonts.gstatic.com`
+    - `https://reqres.in`
+    - `http://weloveiconfonts.com`
 
-Might be perfect uses, but:
+    Might be _okay__ uses, I would like for these to be only required for the `style-src` part, but:
 
-- `https://s3.amazonaws.com`
+    - `https://s3.amazonaws.com`
 
-Open up for pretty much _everything_, so this is included here for the purpose of the demonstration.
+    Open up for pretty much _everything_, so this is included here for the purpose of the demonstration.
 
-Any suggestions for building content assembly strategies are most welcome  and this lead us to the conclusion of the prototype work.
+    Any suggestions for building content assembly strategies are most welcome  and this lead us to the conclusion of the prototype work.
 
 ### Conclusion
 
@@ -242,7 +242,7 @@ All goals:
 
 Were met.
 
-The CSP work was quite educational and quite an eye-opener and I would love to work more in this sphere, but preferably driven by need, since approaching this from a more academic approach is not my _style_, but I guess you have gathered this from following the completed prototype work.
+The CSP work was quite educational and quite an eye-opener and I would love to (and I most certainly have to) work more in this sphere, but preferably driven by need, since approaching this from a more academic approach is not my _style_, but I guess you have gathered this from following the completed prototype work.
 
 ## Next Step
 
